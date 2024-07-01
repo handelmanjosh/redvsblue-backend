@@ -40,12 +40,16 @@ async function main() {
     io.on("connection", async (socket) => {
         // console.log("User connected");
         const wallet = socket.handshake.query.wallet as string;
-        socket.on("fakeData", ({one, two}) => {
-            if (data1.length === 0) data1 = generateFakePricesEndingAt(one, 200);
-            if (data2.length === 0) data2 = generateFakePricesEndingAt(two, 200);
-            socket.emit("fakeData", {data1, data2});
-        })
-        if (!wallet) return;
+        console.log(wallet);
+        if (!wallet) {
+            socket.on("fakeData", ({one, two}) => {
+                if (data1.length === 0) data1 = generateFakePricesEndingAt(one, 200);
+                if (data2.length === 0) data2 = generateFakePricesEndingAt(two, 200);
+                socket.emit("fakeData", {data1, data2});
+            })
+            return;
+        }
+        console.log("Connected");
         const game = findGame() ?? addGame();
         let team = socket.handshake.query.team as string;
         if (!TEAMS.includes(team)) {

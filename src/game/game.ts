@@ -28,13 +28,17 @@ export default class Game {
         this.score = [0, 0];
     }
     async updateScoreOnChain() {
-        if (this.score[0] > 0) {
-            await addScore(0, this.score[0]);
+        try {
+            if (this.score[0] > 0) {
+                await addScore(0, this.score[0]);
+            }
+            if (this.score[1] > 0) {
+                await addScore(1, this.score[1]);
+            }
+            this.score = [0, 0];
+        } catch (e) {
+
         }
-        if (this.score[1] > 0) {
-            await addScore(1, this.score[1]);
-        }
-        this.score = [0, 0];
     }
     frame() {
         this.ai = this.ai.filter((ai: AI) => {
