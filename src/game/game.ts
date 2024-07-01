@@ -32,10 +32,11 @@ export default class Game {
             if (this.score[0] > 0) {
                 await addScore(0, this.score[0]);
             }
+            this.score[0] = 0;
             if (this.score[1] > 0) {
                 await addScore(1, this.score[1]);
             }
-            this.score = [0, 0];
+            this.score[1] = 0;
         } catch (e) {
 
         }
@@ -83,7 +84,7 @@ export default class Game {
             return !plane.dead;
         });
         this.players = new Map(planes);
-        while (this.ai.length < 5) {
+        while (this.ai.length < 6) {
             this.addAI("/f4-eagle.png");
         }
     }
@@ -120,7 +121,8 @@ export default class Game {
             case "/f4-eagle.png": {
                 const x = Math.random() * MAX_W;
                 const y = Math.random() * MAX_H;
-                const team = TEAMS[Math.floor(Math.random() * TEAMS.length)]
+                const redAmount = Array.from(this.players).filter(([_, p]) => p.team === "red" && p.wallet.startsWith("AI")).length
+                const team = redAmount < 3 ? "red" : "blue";
                 const plane = new F4Eagle(x, y, `AI-${team}-${Math.floor(Math.random() * 1000)}`, team);
                 this.players.set(plane.wallet, plane);
                 const ai = new AI(plane, this);

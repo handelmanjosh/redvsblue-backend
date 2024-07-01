@@ -5,7 +5,6 @@ import cors from 'cors';
 import { Server } from 'socket.io';
 import dotenv from 'dotenv';
 import Game from './game/game';
-import { addScore } from './utils';
 import { generateFakePricesEndingAt } from './game/utils';
 
 dotenv.config();
